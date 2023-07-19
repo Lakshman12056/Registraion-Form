@@ -1,0 +1,68 @@
+#HTML--------------------------------------
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="Server.jsp" method="post">
+<table align="center">
+	<tr>
+		<th colspan="2" style="padding:20px";>Registration Page</th>
+	</tr>
+	
+<tr><td>user name:</td><td><input type="text" name="uname"></td></tr>
+<tr><td>password:</td><td><input type="password" name="password"></td></tr>
+<tr><td>email:</td><td><input type="text" name="email"></td></tr>
+<tr><td>Gender:</td><td>Male<input type="radio" name="rgender" value="Male">Female<input type="radio" name="rgender" value="Female"</td></tr>
+<tr><td>phone:</td><td><input type="text" name="phone"></td></tr>
+<tr><td></td><td><input type="submit" value="Register"></td></tr>
+</table>
+</form>
+</body>
+</html>
+
+
+#server.jsp------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>    
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>jspform</title>
+</head>
+<body>
+<%
+String name=request.getParameter("uname");
+String password=request.getParameter("password");
+String email=request.getParameter("email");
+String gender=request.getParameter("rgender");
+String phone=request.getParameter("phone");
+try{
+	Class.forName("oracle.jdbc.driver.OracleDriver");
+	Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","ram");
+	PreparedStatement pw=con.prepareStatement("insert into Student1 values(?,?,?,?,?)");
+	pw.setString(1,name);
+	pw.setString(2,password);
+	pw.setString(3,email);
+	pw.setString(4,phone);
+	pw.setString(5,gender);
+	int n=pw.executeUpdate();
+	if(n!=0){
+	out.print("Connection successful");
+	}
+	else{
+		out.print("not connected");
+	}
+	
+}
+catch(Exception e){
+	out.print(e.getMessage());
+}
+%>
+
+
+</body>
+</html>
